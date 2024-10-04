@@ -1,185 +1,143 @@
 import random
-import time
-import sys
 import os
+
+# Classe que representa uma empresa (jogador)
+class Empresa:
+    def __init__(self, nome):
+        self.nome = nome
+        self.saldo = 1000.0  # Saldo inicial de R$ 1.000,00
+
+    def investir(self, marketing, pd, producao, multiplicadores):
+        # Cálculo dos retornos com base nos multiplicadores do cenário (oculto para os jogadores)
+        retorno_marketing = marketing * multiplicadores['marketing']
+        retorno_pd = pd * multiplicadores['pd']
+        retorno_producao = producao * multiplicadores['producao']
+        
+        # O saldo é atualizado com o retorno dos investimentos
+        self.saldo += retorno_marketing + retorno_pd + retorno_producao
+
+# Função que cria um cenário aleatório para cada rodada
+def gerar_cenario():
+    cenarios = [
+        {"descricao": "A demanda do mercado aumentou. Produzir mais parece ser uma boa opção.", "marketing": 1.2, "pd": 1.1, "producao": 1.5},
+        {"descricao": "A concorrência está feroz! Talvez seja a hora de investir em Marketing.", "marketing": 1.5, "pd": 1.1, "producao": 1.0},
+        {"descricao": "O mercado está saturado. Inovar pode ser a única saída.", "marketing": 1.0, "pd": 1.6, "producao": 1.2},
+        {"descricao": "Custos de produção estão subindo. Cuidados com excesso de produção.", "marketing": 1.3, "pd": 1.0, "producao": 0.8},
+        {"descricao": "O setor de tecnologia está aquecido! Investimentos em P&D podem dar uma vantagem competitiva.", "marketing": 1.0, "pd": 1.8, "producao": 1.1},
+        {"descricao": "Uma nova rede social viralizou, oferecendo oportunidades de Marketing digital.", "marketing": 1.7, "pd": 1.1, "producao": 1.0},
+        {"descricao": "Um novo concorrente entrou no mercado com um produto inovador.", "marketing": 1.3, "pd": 1.5, "producao": 1.0},
+        {"descricao": "Houve uma queda nas taxas de juros, facilitando empréstimos para expansão de produção.", "marketing": 1.0, "pd": 1.2, "producao": 1.7},
+        {"descricao": "Uma mudança regulatória impôs novas regras para publicidade.", "marketing": 0.9, "pd": 1.2, "producao": 1.1},
+        {"descricao": "A demanda por produtos sustentáveis está em alta, impulsionando a inovação em P&D.", "marketing": 1.1, "pd": 1.7, "producao": 1.0},
+        {"descricao": "Um aumento inesperado de inflação afetou os custos de produção.", "marketing": 1.0, "pd": 1.0, "producao": 0.7},
+        {"descricao": "O país está em recessão, consumidores estão cautelosos, e estratégias de Marketing precisam ser agressivas.", "marketing": 1.8, "pd": 1.2, "producao": 0.9},
+        {"descricao": "Novas tecnologias de automação reduziram custos de produção.", "marketing": 1.0, "pd": 1.5, "producao": 1.6},
+        {"descricao": "A mídia social passou por uma mudança nas regras de publicidade, impactando campanhas de Marketing.", "marketing": 0.8, "pd": 1.4, "producao": 1.2},
+        {"descricao": "A percepção do consumidor sobre qualidade aumentou. Investimentos em P&D se tornam críticos.", "marketing": 1.1, "pd": 1.8, "producao": 1.1},
+        {"descricao": "Um aumento no preço dos materiais causou um impacto nos custos de produção.", "marketing": 1.2, "pd": 1.0, "producao": 0.8},
+        {"descricao": "A tendência de 'boicotes sociais' contra empresas cresceu, e as marcas precisam melhorar sua imagem pública.", "marketing": 1.6, "pd": 1.0, "producao": 1.1},
+        {"descricao": "Uma inovação revolucionária foi introduzida no mercado, mudando completamente o setor.", "marketing": 1.1, "pd": 1.9, "producao": 1.3},
+        {"descricao": "O setor de e-commerce está crescendo rapidamente, criando novas oportunidades para Marketing digital.", "marketing": 1.7, "pd": 1.3, "producao": 1.0},
+        {"descricao": "Mudanças climáticas estão afetando a cadeia de suprimentos e a produção, exigindo inovação.", "marketing": 1.2, "pd": 1.6, "producao": 0.9},
+        {"descricao": "Houve um crescimento explosivo nas plataformas de streaming, oferecendo novas opções para publicidade digital.", "marketing": 1.6, "pd": 1.2, "producao": 1.0},
+        {"descricao": "Houve uma queda nos preços de energia, o que reduz os custos de produção.", "marketing": 1.0, "pd": 1.0, "producao": 1.8},
+        {"descricao": "O governo anunciou novos subsídios para empresas que investem em pesquisa e desenvolvimento.", "marketing": 1.0, "pd": 2.0, "producao": 1.2},
+        {"descricao": "Uma crise de confiança abalou o mercado, e as empresas precisam se reposicionar no Marketing.", "marketing": 1.8, "pd": 1.3, "producao": 1.0}
+    ]
+    return random.choice(cenarios)
+
+# Função para exibir o ranking das empresas
+def exibir_ranking(empresas):
+    empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
+    print("\n" + "═" * 50)
+    print("🏆  RANKING DAS EMPRESAS  🏆".center(50))
+    print("═" * 50)
+    for i, empresa in enumerate(empresas_ordenadas, start=1):
+        print(f"{i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
+    print("═" * 50)
 
 # Função para limpar a tela
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Definir a classe Empresa
-class Empresa:
-    def __init__(self, nome, orcamento_inicial=100):
-        self.nome = nome
-        self.orcamento_inicial = orcamento_inicial  # Orçamento inicial
-        self.orcamento = orcamento_inicial  # Orçamento restante
-        self.faturamento_total = 0  # Faturamento total acumulado
-        self.investimento_marketing = 0
-        self.investimento_pd = 0
-        self.investimento_novos_produtos = 0
-    
-    def tomar_decisao(self):
-        print(f"\n💼 Decisões da Empresa {self.nome} (Orçamento restante: R${self.orcamento:.2f}):")
-        self.investimento_marketing = int(input("Quanto investir em marketing? "))
-        self.investimento_pd = int(input("Quanto investir em P&D? "))
-        self.investimento_novos_produtos = int(input("Quanto investir em novos produtos? "))
-        
-        total_investido = self.investimento_marketing + self.investimento_pd + self.investimento_novos_produtos
-        if total_investido > self.orcamento:
-            print("❌ Investimento excede o orçamento disponível! Tente novamente.")
-            self.tomar_decisao()
-        else:
-            self.orcamento -= total_investido
-
-    def calcular_resultados(self, evento_mercado):
-        impacto_evento = evento_mercado['impacto']
-
-        # Custo fixo da rodada que diminui proporcionalmente ao investimento em P&D
-        custo_fixo = 10 - (self.investimento_pd * 0.1)
-        if custo_fixo < 0:
-            custo_fixo = 0  # Não permitir custos negativos
-        
-        # Lógica para calcular o crescimento com base no evento
-        if evento_mercado['nome'] == "Mudança nas preferências do consumidor":
-            crescimento = (self.investimento_novos_produtos * 0.5) + (self.investimento_marketing * 0.3) + impacto_evento
-        
-        elif evento_mercado['nome'] == "Nova regulamentação":
-            crescimento = (self.investimento_pd * 0.5) + (self.investimento_marketing * 0.2) + impacto_evento
-        
-        elif evento_mercado['nome'] == "Crise econômica":
-            crescimento = (self.investimento_marketing * 0.1) + (self.investimento_novos_produtos * 0.1) + impacto_evento
-        
-        elif evento_mercado['nome'] == "Concorrência intensa":
-            crescimento = (self.investimento_marketing * 0.4) + (self.investimento_novos_produtos * 0.2) + impacto_evento
-        
-        elif evento_mercado['nome'] == "Inovação tecnológica":
-            crescimento = (self.investimento_novos_produtos * 0.4) + (self.investimento_pd * 0.3) + impacto_evento
-
-        # Se não houver investimento, o faturamento será equivalente ao custo fixo negativo
-        if self.investimento_marketing == 0 and self.investimento_pd == 0 and self.investimento_novos_produtos == 0:
-            crescimento = -custo_fixo  # O faturamento será negativo equivalente ao custo fixo
-
-        # Atualiza o faturamento da rodada
-        self.faturamento_total += max(crescimento, 0)  # Garantir que o faturamento não seja negativo
-
-        # Atualiza o orçamento para a próxima rodada
-        self.orcamento += self.faturamento_total  # Orçamento é atualizado com o faturamento da rodada
-
-# Função para gerar eventos de mercado e cenários relacionados
-def gerar_evento_e_cenario():
-    eventos = [
-        {"nome": "Mudança nas preferências do consumidor", "impacto": random.uniform(5, 15),
-         "cenario": "Os consumidores estão mudando seus hábitos de compra, preferindo produtos mais sustentáveis e inovadores."},
-        {"nome": "Nova regulamentação", "impacto": random.uniform(-5, 5),
-         "cenario": "O governo introduziu novas regulamentações que afetam diretamente a produção e o custo de operações das empresas."},
-        {"nome": "Crise econômica", "impacto": random.uniform(-20, -5),
-         "cenario": "A economia global está enfrentando uma desaceleração significativa, e o poder de compra dos consumidores está em queda."},
-        {"nome": "Concorrência intensa", "impacto": random.uniform(-15, 0),
-         "cenario": "Novos concorrentes entraram no mercado, com ofertas agressivas e inovação tecnológica, desafiando sua posição de mercado."},
-        {"nome": "Inovação tecnológica", "impacto": random.uniform(5, 15),
-         "cenario": "Uma nova tecnologia disruptiva está revolucionando o setor, abrindo oportunidades para empresas que investirem rapidamente."},
-    ]
-    return random.choice(eventos)
-
-# Função para revelar os resultados de faturamento da rodada
-def revelar_resultados(empresas):
-    print("\n🔍 CALCULANDO OS RESULTADOS", end="")
-    for _ in range(3):
-        time.sleep(0.5)
-        print(".", end="")
-        sys.stdout.flush()
-    time.sleep(1)
-    
-    print("\n=== 🏆 RANKING DAS EMPRESAS (RESULTADOS DA RODADA) ===")
-    # Ordenar empresas pelo faturamento da rodada
-    empresas.sort(key=lambda e: e.faturamento_total, reverse=True)
-    
-    for i, empresa in enumerate(empresas, 1):
-        for char in f"{i}. {empresa.nome} - Faturamento da Rodada: R${empresa.faturamento_total:.2f}\n":
-            sys.stdout.write(char)
-            sys.stdout.flush()
-            time.sleep(0.03)
-        time.sleep(0.3)
-
-    input("\nPressione ENTER para continuar para a próxima rodada...")
-
-# Função para exibir o ranking geral fixo no topo de todas as rodadas
-def exibir_ranking_fixo(empresas):
+# Função que exibe a tela inicial
+def tela_inicial():
     limpar_tela()
-    print("\n=== 🏆 RANKING GERAL DAS EMPRESAS ===")
-    # Ordenar empresas pelo orçamento restante
-    for i, empresa in enumerate(empresas, 1):
-        print(f"{i}. {empresa.nome} - Orçamento Restante: R${empresa.orcamento:.2f}")
-
-# Função para destacar o vencedor
-def destacar_vencedor(empresa):
-    print("\n*** 🎉 PARABÉNS! ***")
-    for char in f"A empresa vencedora é {empresa.nome}, com um faturamento total de R${empresa.faturamento_total:.2f}!\n":
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        time.sleep(0.05)
-
-# Função para apresentar o jogo com introdução e regras
-def apresentar_jogo():
-    print("""
-    === 📊 BEM-VINDO AO DESAFIO DAS EMPRESAS ===
-    
-    Cenário: Você é o CEO de uma empresa em um mercado altamente competitivo e dinâmico. A cada rodada, você tomará decisões estratégicas sobre como investir seu orçamento nas seguintes áreas:
-
-    1. **Marketing**: Investir em marketing aumenta a visibilidade da sua empresa e pode atrair mais clientes. Quanto mais você investir, maior será o impacto no seu faturamento, especialmente se o mercado estiver receptivo às suas campanhas.
-    
-    2. **Pesquisa e Desenvolvimento (P&D)**: Investimentos em P&D podem resultar em inovações que melhoram seus produtos ou criam novos produtos. Isso pode levar a um aumento significativo no faturamento a longo prazo, mas geralmente exige um investimento inicial alto e pode não gerar resultados imediatos.
-    
-    3. **Novos Produtos**: Lançar novos produtos pode abrir novas oportunidades de mercado e atrair diferentes segmentos de consumidores. Esse tipo de investimento pode ter um retorno rápido se a demanda for alta, mas também pode acarretar riscos se os novos produtos não atenderem às expectativas do mercado.
-
-    Objetivo: O objetivo é maximizar o faturamento da sua empresa. O mercado enfrentará eventos inesperados a cada rodada, como crises econômicas, mudanças tecnológicas e novas regulamentações, que afetarão o desempenho de todas as empresas.
-    
-    Como jogar:
-    - A cada rodada, você terá um orçamento disponível para investir.
-    - Tome decisões de investimento em três áreas: marketing, P&D e novos produtos.
-    - Ajuste suas decisões com base nos eventos de mercado e na sua estratégia.
-    - A empresa com o maior faturamento no final do jogo será a vencedora.
-    
-    Prepare-se, pois cada decisão conta!
-    """)
-    input("Pressione ENTER para começar o jogo...")
+    print("═" * 50)
+    print(" 📊 BEM-VINDO AO DESAFIO DAS EMPRESAS 📊".center(50))
+    print("═" * 50)
+    print("📌 COMO FUNCIONA O JOGO:")
+    print("Você é o CEO de uma empresa em um mercado altamente competitivo.")
+    print("A cada rodada, você fará decisões estratégicas sobre onde investir seu orçamento.")
+    print("\nÁreas de investimento disponíveis:")
+    print("  ➤ Marketing: Aumenta a visibilidade da empresa.")
+    print("  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
+    print("  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
+    print("═" * 50)
+    input("Pressione Enter para iniciar o jogo...")
 
 # Função principal do jogo
-def jogar(num_rodadas):
-    limpar_tela()
-    apresentar_jogo()
-
-    num_jogadores = int(input("Quantos jogadores irão participar? (Máximo 10): "))
+def jogo():
+    tela_inicial()
+    
+    # Perguntar o número de jogadores e rodadas
+    num_jogadores = int(input("\nQuantos jogadores irão participar (máx. 10)? "))
+    num_rodadas = int(input("Quantas rodadas terá o jogo (máx. 10)? "))
+    
+    # Criar as empresas (jogadores)
     empresas = []
-
-    # Criar as empresas
     for i in range(num_jogadores):
-        nome = input(f"Nome da Empresa {i+1}: ")
-        empresas.append(Empresa(nome))
-    
+        nome_empresa = input(f"Nome da empresa do Jogador {i+1}: ")
+        empresas.append(Empresa(nome_empresa))
+
+    # Rodar o jogo por cada rodada
     for rodada in range(1, num_rodadas + 1):
-        exibir_ranking_fixo(empresas)
-        print(f"=== 📊 Rodada {rodada} ===")
-        
-        # Gerar evento e cenário relacionados
-        evento = gerar_evento_e_cenario()
-        print(f"\n⚠️ Cenário: {evento['cenario']}")
-        print(f"⚠️ Evento de Mercado: {evento['nome']} com impacto de {evento['impacto']:.2f}")
-        
-        # Jogadores tomam decisões
-        for empresa in empresas:
-            empresa.tomar_decisao()
-        
-        # Calcular resultados
-        for empresa in empresas:
-            empresa.calcular_resultados(evento)
+        limpar_tela()
 
-        # Revelar ranking da rodada com efeito
-        revelar_resultados(empresas)
-    
-    # Destacar o vencedor
-    empresas.sort(key=lambda x: x.faturamento_total, reverse=True)
-    destacar_vencedor(empresas[0])
+        # Exibir o ranking fixo no início de cada rodada
+        exibir_ranking(empresas)
 
-# Iniciar o jogo com 10 rodadas
-jogar(10)
+        print(f"\n{rodada}ª RODADA".center(10, "="))
+        
+        # Gerar cenário aleatório
+        cenario = gerar_cenario()
+        print(f"Cenário: {cenario['descricao']}")
+        print("=" * 50)
+        
+        # Para cada jogador, solicitar os investimentos
+        for empresa in empresas:
+            print(f"\n{empresa.nome}, faça suas escolhas de investimento:")
+            print(f"Saldo disponível: R${empresa.saldo:.2f}")
+            
+            # Solicitar os investimentos
+            try:
+                marketing = float(input("Investimento em Marketing (R$): "))
+                pd = float(input("Investimento em P&D (R$): "))
+                producao = float(input("Investimento em Produção (R$): "))
+            except ValueError:
+                print("⚠️ Valor inválido! Tente novamente.")
+                continue
+            
+            # Verificar se os investimentos não ultrapassam o saldo
+            total_investido = marketing + pd + producao
+            if total_investido > empresa.saldo:
+                print("❌ Investimento maior que o saldo disponível. Tente novamente.")
+                continue
+
+            # Atualizar saldo com os retornos (sem mostrar os multiplicadores)
+            empresa.investir(marketing, pd, producao, cenario)
+
+        # Exibir ranking ao final da rodada (fixo no início da próxima)
+        print("\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
+        input()
+
+    # Exibir o vencedor ao final do jogo
+    limpar_tela()
+    exibir_ranking(empresas)
+    vencedor = max(empresas, key=lambda x: x.saldo)
+    print(f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
+    print("=" * 50)
+
+# Executar o jogo
+if __name__ == "__main__":
+    jogo()
