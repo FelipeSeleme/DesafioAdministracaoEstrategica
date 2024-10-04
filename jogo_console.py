@@ -61,6 +61,10 @@ class Empresa:
         self.faturamento += crescimento
         self.orcamento += self.faturamento
 
+    def valor_empresa(self):
+        # Retorna o valor total da empresa
+        return self.faturamento + self.orcamento
+
 # Função para gerar eventos de mercado e cenários relacionados
 def gerar_evento_e_cenario():
     eventos = [
@@ -87,8 +91,11 @@ def revelar_resultados(empresas):
     time.sleep(1)
     
     print("\n=== 🏆 RANKING DAS EMPRESAS ===")
+    # Ordenar empresas pelo valor total
+    empresas.sort(key=lambda e: e.valor_empresa(), reverse=True)
+    
     for i, empresa in enumerate(empresas, 1):
-        for char in f"{i}. {empresa.nome} - Faturamento: R${empresa.faturamento:.2f}\n":
+        for char in f"{i}. {empresa.nome} - Valor da Empresa: R${empresa.valor_empresa():.2f}\n":
             sys.stdout.write(char)
             sys.stdout.flush()
             time.sleep(0.03)
@@ -98,13 +105,16 @@ def revelar_resultados(empresas):
 def exibir_ranking_fixo(empresas):
     limpar_tela()
     print("\n=== 🏆 RANKING ATUAL DAS EMPRESAS ===")
+    # Ordenar empresas pelo valor total
+    empresas.sort(key=lambda e: e.valor_empresa(), reverse=True)
+    
     for i, empresa in enumerate(empresas, 1):
-        print(f"{i}. {empresa.nome} - Faturamento: R${empresa.faturamento:.2f}")
+        print(f"{i}. {empresa.nome} - Valor da Empresa: R${empresa.valor_empresa():.2f}")
 
 # Função para destacar o vencedor
 def destacar_vencedor(empresa):
     print("\n*** 🎉 PARABÉNS! ***")
-    for char in f"A empresa vencedora é {empresa.nome}, com um faturamento de R${empresa.faturamento:.2f}!\n":
+    for char in f"A empresa vencedora é {empresa.nome}, com um Valor da Empresa de R${empresa.valor_empresa():.2f}!\n":
         sys.stdout.write(char)
         sys.stdout.flush()
         time.sleep(0.05)
@@ -122,13 +132,13 @@ def apresentar_jogo():
     
     3. **Novos Produtos**: Lançar novos produtos pode abrir novas oportunidades de mercado e atrair diferentes segmentos de consumidores. Esse tipo de investimento pode ter um retorno rápido se a demanda for alta, mas também pode acarretar riscos se os novos produtos não atenderem às expectativas do mercado.
 
-    Objetivo: O objetivo é maximizar o faturamento da sua empresa. O mercado enfrentará eventos inesperados a cada rodada, como crises econômicas, mudanças tecnológicas e novas regulamentações, que afetarão o desempenho de todas as empresas.
+    Objetivo: O objetivo é maximizar o valor da sua empresa, que é a soma do faturamento e do orçamento disponível. O mercado enfrentará eventos inesperados a cada rodada, como crises econômicas, mudanças tecnológicas e novas regulamentações, que afetarão o desempenho de todas as empresas.
     
     Como jogar:
     - A cada rodada, você terá um orçamento disponível para investir.
     - Tome decisões de investimento em três áreas: marketing, P&D e novos produtos.
     - Ajuste suas decisões com base nos eventos de mercado e na sua estratégia.
-    - A empresa com o maior faturamento no final do jogo será a vencedora.
+    - A empresa com o maior Valor da Empresa no final do jogo será a vencedora.
     
     Prepare-se, pois cada decisão conta!
     """)
@@ -164,14 +174,11 @@ def jogar(num_rodadas):
         for empresa in empresas:
             empresa.calcular_resultados(evento)
 
-        # Ordenar empresas por faturamento
-        empresas.sort(key=lambda x: x.faturamento, reverse=True)
-
         # Revelar ranking da rodada com efeito
         revelar_resultados(empresas)
     
-    # Ordenar empresas por faturamento final e destacar o vencedor
-    empresas.sort(key=lambda x: x.faturamento, reverse=True)
+    # Destacar o vencedor
+    empresas.sort(key=lambda x: x.valor_empresa(), reverse=True)
     destacar_vencedor(empresas[0])
 
 # Iniciar o jogo com 10 rodadas
