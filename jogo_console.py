@@ -57,13 +57,15 @@ class Empresa:
         if self.investimento_pd > 20:
             self.custos -= self.investimento_pd * 0.05
         
-        # Atualiza o faturamento e orçamento
+        # Atualiza o faturamento
         self.faturamento += crescimento
-        self.orcamento += self.faturamento
+
+        # Atualiza o orçamento com base no desempenho
+        self.orcamento += crescimento
 
     def valor_empresa(self):
-        # Retorna o valor total da empresa
-        return self.faturamento + self.orcamento
+        # O valor da empresa é baseado no orçamento restante
+        return self.orcamento
 
 # Função para gerar eventos de mercado e cenários relacionados
 def gerar_evento_e_cenario():
@@ -132,7 +134,7 @@ def apresentar_jogo():
     
     3. **Novos Produtos**: Lançar novos produtos pode abrir novas oportunidades de mercado e atrair diferentes segmentos de consumidores. Esse tipo de investimento pode ter um retorno rápido se a demanda for alta, mas também pode acarretar riscos se os novos produtos não atenderem às expectativas do mercado.
 
-    Objetivo: O objetivo é maximizar o valor da sua empresa, que é a soma do faturamento e do orçamento disponível. O mercado enfrentará eventos inesperados a cada rodada, como crises econômicas, mudanças tecnológicas e novas regulamentações, que afetarão o desempenho de todas as empresas.
+    Objetivo: O objetivo é maximizar o valor da sua empresa, que é o orçamento restante disponível. O mercado enfrentará eventos inesperados a cada rodada, como crises econômicas, mudanças tecnológicas e novas regulamentações, que afetarão o desempenho de todas as empresas.
     
     Como jogar:
     - A cada rodada, você terá um orçamento disponível para investir.
