@@ -33,15 +33,32 @@ class Empresa:
 
     def calcular_resultados(self, evento_mercado):
         impacto_evento = evento_mercado['impacto']
-        crescimento = (self.investimento_marketing * 0.1) + (self.investimento_novos_produtos * 0.2) - (self.custos * 0.1)
+        
+        # Lógica para calcular o crescimento com base no evento
+        if evento_mercado['nome'] == "Mudança nas preferências do consumidor":
+            crescimento = (self.investimento_novos_produtos * 0.3) + (self.investimento_pd * 0.1) - (self.custos * 0.1)
+        
+        elif evento_mercado['nome'] == "Nova regulamentação":
+            crescimento = (self.investimento_pd * 0.4) + (self.investimento_marketing * 0.1) - (self.custos * 0.1)
+        
+        elif evento_mercado['nome'] == "Crise econômica":
+            crescimento = (self.investimento_marketing * 0.05) + (self.investimento_novos_produtos * 0.1) - (self.custos * 0.2)
+        
+        elif evento_mercado['nome'] == "Concorrência intensa":
+            crescimento = (self.investimento_marketing * 0.3) + (self.investimento_novos_produtos * 0.1) - (self.custos * 0.1)
+        
+        elif evento_mercado['nome'] == "Inovação tecnológica":
+            crescimento = (self.investimento_novos_produtos * 0.2) + (self.investimento_pd * 0.3) - (self.custos * 0.1)
+        
+        # Adicionando o impacto do evento
         crescimento += impacto_evento
         
+        # Ajuste de custos com base em investimentos em P&D
         if self.investimento_pd > 20:
             self.custos -= self.investimento_pd * 0.05
         
+        # Atualiza o faturamento e orçamento
         self.faturamento += crescimento
-        
-        # Atualizar orçamento com base no faturamento
         self.orcamento += self.faturamento
 
 # Função para gerar eventos de mercado e cenários relacionados
