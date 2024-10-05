@@ -123,20 +123,23 @@ def jogo():
             print(f"\n{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
             print(f"Saldo disponível: R${empresa.saldo:.2f}")
             
-            # Solicitar os investimentos
-            try:
-                marketing = float(input("Investimento em Marketing (R$): "))
-                pd = float(input("Investimento em P&D (R$): "))
-                producao = float(input("Investimento em Produção (R$): "))
-            except ValueError:
-                print("⚠️ Valor inválido! Tente novamente.")
-                continue
-            
-            # Verificar se os investimentos não ultrapassam o saldo
-            total_investido = marketing + pd + producao
-            if total_investido > empresa.saldo:
-                print("❌ Investimento maior que o saldo disponível. Tente novamente.")
-                continue
+            while True:  # Laço para garantir que o jogador corrija os valores
+                try:
+                    # Solicitar os investimentos
+                    marketing = float(input("Investimento em Marketing (R$): "))
+                    pd = float(input("Investimento em P&D (R$): "))
+                    producao = float(input("Investimento em Produção (R$): "))
+                except ValueError:
+                    print("⚠️ Valor inválido! Tente novamente.")
+                    continue
+                
+                # Verificar se os investimentos não ultrapassam o saldo
+                total_investido = marketing + pd + producao
+                if total_investido > empresa.saldo:
+                    print("❌ Investimento maior que o saldo disponível. Tente novamente.")
+                else:
+                    # Se os valores forem válidos, sair do laço
+                    break
 
             # Atualizar saldo com os retornos (sem mostrar os multiplicadores)
             empresa.investir(marketing, pd, producao, cenario)
