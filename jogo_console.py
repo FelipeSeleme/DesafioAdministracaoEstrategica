@@ -115,7 +115,10 @@ def jogo():
         print(f"Cenário: {cenario['descricao']}")
         print("=" * 50)
         
-        # Para cada jogador, solicitar os investimentos
+        # Ordenar as empresas de acordo com o saldo atual (ranking)
+        empresas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
+
+        # Para cada jogador, solicitar os investimentos na ordem do ranking
         for empresa in empresas:
             print(f"\n{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
             print(f"Saldo disponível: R${empresa.saldo:.2f}")
