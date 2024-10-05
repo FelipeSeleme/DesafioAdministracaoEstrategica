@@ -1,5 +1,6 @@
 import random
 import os
+import time
 
 # Classe que representa uma empresa (jogador)
 class Empresa:
@@ -16,9 +17,46 @@ class Empresa:
         # O saldo é atualizado com o retorno dos investimentos
         self.saldo += retorno_marketing + retorno_pd + retorno_producao
 
-# Função que cria um cenário aleatório para cada rodada
-def gerar_cenario():
-    cenarios = [
+# Função para exibir o texto com efeito de digitação
+def digitar_texto(texto, velocidade=0.02):
+    for caractere in texto:
+        print(caractere, end='', flush=True)
+        time.sleep(velocidade)
+    print()
+
+# Função para exibir o ranking das empresas com efeito de digitação apenas na listagem
+def exibir_ranking(empresas):
+    empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
+    print("\n" + "═" * 50)
+    print("🏆  RANKING DAS EMPRESAS  🏆".center(50))
+    print("═" * 50)
+    for i, empresa in enumerate(empresas_ordenadas, start=1):
+        digitar_texto(f"{i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
+    print("═" * 50)
+
+# Função para limpar a tela
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+# Função que exibe a tela inicial
+def tela_inicial():
+    limpar_tela()
+    print("═" * 50)
+    print(" 📊 BEM-VINDO AO DESAFIO DAS EMPRESAS 📊".center(50))
+    print("═" * 50)
+    print("📌 COMO FUNCIONA O JOGO:")
+    print("Você é o CEO de uma empresa em um mercado altamente competitivo.")
+    print("A cada rodada, você fará decisões estratégicas sobre onde investir seu orçamento.")
+    print("\nÁreas de investimento disponíveis:")
+    print("  ➤ Marketing: Aumenta a visibilidade da empresa.")
+    print("  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
+    print("  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
+    print("═" * 50)
+    input("Pressione Enter para iniciar o jogo...")
+
+# Função que cria cenários sem repetição para cada rodada
+def gerar_cenarios_unicos(num_rodadas):
+    cenarios_disponiveis = [
         {"descricao": "A demanda do mercado aumentou. Produzir mais parece ser uma boa opção.", "marketing": 1.2, "pd": 1.1, "producao": 1.5},
         {"descricao": "A concorrência está feroz! Talvez seja a hora de investir em Marketing.", "marketing": 1.5, "pd": 1.1, "producao": 1.0},
         {"descricao": "O mercado está saturado. Inovar pode ser a única saída.", "marketing": 1.0, "pd": 1.6, "producao": 1.2},
@@ -44,37 +82,7 @@ def gerar_cenario():
         {"descricao": "O governo anunciou novos subsídios para empresas que investem em pesquisa e desenvolvimento.", "marketing": 1.0, "pd": 2.0, "producao": 1.2},
         {"descricao": "Uma crise de confiança abalou o mercado, e as empresas precisam se reposicionar no Marketing.", "marketing": 1.8, "pd": 1.3, "producao": 1.0}
     ]
-    return random.choice(cenarios)
-
-# Função para exibir o ranking das empresas
-def exibir_ranking(empresas):
-    empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
-    print("\n" + "═" * 50)
-    print("🏆  RANKING DAS EMPRESAS  🏆".center(50))
-    print("═" * 50)
-    for i, empresa in enumerate(empresas_ordenadas, start=1):
-        print(f"{i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
-    print("═" * 50)
-
-# Função para limpar a tela
-def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-# Função que exibe a tela inicial
-def tela_inicial():
-    limpar_tela()
-    print("═" * 50)
-    print(" 📊 BEM-VINDO AO DESAFIO DAS EMPRESAS 📊".center(50))
-    print("═" * 50)
-    print("📌 COMO FUNCIONA O JOGO:")
-    print("Você é o CEO de uma empresa em um mercado altamente competitivo.")
-    print("A cada rodada, você fará decisões estratégicas sobre onde investir seu orçamento.")
-    print("\nÁreas de investimento disponíveis:")
-    print("  ➤ Marketing: Aumenta a visibilidade da empresa.")
-    print("  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
-    print("  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
-    print("═" * 50)
-    input("Pressione Enter para iniciar o jogo...")
+    return random.sample(cenarios_disponiveis, num_rodadas)
 
 # Função principal do jogo
 def jogo():
@@ -90,6 +98,9 @@ def jogo():
         nome_empresa = input(f"Nome da empresa do Jogador {i+1}: ")
         empresas.append(Empresa(nome_empresa))
 
+    # Gerar cenários únicos
+    cenarios = gerar_cenarios_unicos(num_rodadas)
+
     # Rodar o jogo por cada rodada
     for rodada in range(1, num_rodadas + 1):
         limpar_tela()
@@ -97,16 +108,16 @@ def jogo():
         # Exibir o ranking fixo no início de cada rodada
         exibir_ranking(empresas)
 
-        print(f"\n{rodada}ª RODADA".center(10, "="))
+        print(f"\n{rodada}ª RODADA")
         
-        # Gerar cenário aleatório
-        cenario = gerar_cenario()
+        # Obter o cenário único da rodada
+        cenario = cenarios[rodada - 1]
         print(f"Cenário: {cenario['descricao']}")
         print("=" * 50)
         
         # Para cada jogador, solicitar os investimentos
         for empresa in empresas:
-            print(f"\n{empresa.nome}, faça suas escolhas de investimento:")
+            print(f"\n{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
             print(f"Saldo disponível: R${empresa.saldo:.2f}")
             
             # Solicitar os investimentos
@@ -128,8 +139,7 @@ def jogo():
             empresa.investir(marketing, pd, producao, cenario)
 
         # Exibir ranking ao final da rodada (fixo no início da próxima)
-        print("\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
-        input()
+        input("\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
 
     # Exibir o vencedor ao final do jogo
     limpar_tela()
