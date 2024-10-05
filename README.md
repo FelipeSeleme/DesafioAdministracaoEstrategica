@@ -40,7 +40,7 @@ Cada jogador deve escolher o nome da sua empresa. O nome será utilizado para id
 
 ### 5. Exibição do Ranking
 
-Ao final de cada rodada, o ranking das empresas é exibido na tela com um efeito de digitação. O ranking mostra o nome da empresa de cada jogador e o saldo atualizado, permitindo que todos acompanhem quem está na frente.
+Ao final de cada rodada, o ranking das empresas é exibido na tela. O ranking mostra o nome da empresa de cada jogador e o saldo atualizado, permitindo que todos acompanhem quem está na frente.
 
 ### 6. Vencedor
 
