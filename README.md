@@ -1,63 +1,63 @@
-# Desafio das Empresas
+# 🏆 Desafio das Empresas - Jogo de Simulação em Python
 
-## Descrição
+## 📋 Sobre o Jogo
 
-O "Desafio das Empresas" é um jogo de estratégia interativo onde os jogadores assumem o papel de CEOs de empresas competindo em um mercado dinâmico e desafiador. O objetivo é maximizar o faturamento de suas empresas através de decisões estratégicas de investimento em três áreas principais: Marketing, Pesquisa e Desenvolvimento (P&D) e Produção. A cada rodada, eventos inesperados podem impactar o desempenho das empresas, exigindo adaptações rápidas nas estratégias de investimento.
+**Desafio das Empresas** é um jogo de simulação estratégico onde cada jogador assume o papel de **CEO** de uma empresa. O objetivo é gerenciar bem os recursos financeiros e tomar decisões estratégicas para aumentar o saldo da empresa, enfrentando cenários de mercado variados. Cada decisão afeta o desempenho em áreas como Marketing, Pesquisa & Desenvolvimento (P&D) e Produção. Ao final do jogo, o jogador com o maior saldo vence.
 
-## Estrutura do Projeto
+Este jogo foi desenvolvido para fins educacionais, como parte de uma dinâmica de grupo sobre **teorias de aprendizado**, ensinando os participantes a tomarem decisões estratégicas sob condições de incerteza e competição.
 
--   **`jogo_console.py`**: Código-fonte do jogo, onde os jogadores interagem através do terminal em modo console.
+## 🎮 Como Jogar
 
-## Como Executar
+### 1. Início do Jogo
 
-1. **Certifique-se de ter o Python instalado** em sua máquina (versão 3.6 ou superior).
-2. **Navegue até o diretório do projeto** utilizando o terminal.
-3. **Execute o arquivo do jogo** com o seguinte comando:
+1. Ao iniciar o jogo, os jogadores são apresentados a uma **tela inicial** com um resumo das regras.
+2. Pressione `Enter` para avançar e iniciar a configuração do jogo.
+
+### 2. Configuração
+
+-   **Número de Jogadores**: Cada jogo pode ter de 1 a 10 jogadores.
+-   **Número de Rodadas**: O jogo pode ter de 1 a 10 rodadas.
+
+### 3. Nome das Empresas
+
+Cada jogador deve escolher o nome da sua empresa. O nome será utilizado para identificar os jogadores durante o jogo e no ranking.
+
+### 4. Rodadas e Decisões
+
+1. **Cenário da Rodada**: Em cada rodada, será apresentado um **cenário de mercado** único. O cenário inclui descrições que destacam tendências ou mudanças no mercado e indicam quais áreas podem ter maior impacto.
+
+    Exemplo de cenário: "A demanda do mercado aumentou. Produzir mais parece ser uma boa opção."
+
+2. **Investimentos**: Cada jogador terá que decidir como investir seus recursos em três áreas:
+
+    - **Marketing**: Aumenta a visibilidade e reputação da empresa.
+    - **Pesquisa e Desenvolvimento (P&D)**: Cria inovação e novos produtos, garantindo vantagem competitiva.
+    - **Produção**: Aumenta a capacidade de atender à demanda do mercado.
+
+    Os jogadores devem informar quanto do saldo disponível desejam investir em cada área. O saldo inicial de cada empresa é de **R$1.000,00**, e esse valor é atualizado ao longo do jogo.
+
+3. **Cálculo dos Retornos**: Os retornos dos investimentos são calculados com base nos **multiplicadores ocultos** de cada cenário. O saldo de cada empresa será atualizado ao fim da rodada com base no sucesso das suas decisões.
+
+### 5. Exibição do Ranking
+
+Ao final de cada rodada, o ranking das empresas é exibido na tela com um efeito de digitação. O ranking mostra o nome da empresa de cada jogador e o saldo atualizado, permitindo que todos acompanhem quem está na frente.
+
+### 6. Vencedor
+
+Ao término das rodadas, o jogo exibe o ranking final e a empresa vencedora será aquela que acumulou o maior saldo.
+
+## 🛠️ Instalação e Execução
+
+### Pré-requisitos
+
+-   **Python 3.x** instalado no sistema.
+
+### Como Executar
+
+1. Clone este repositório ou baixe os arquivos do jogo.
+2. No terminal, navegue até a pasta onde o arquivo do jogo está localizado.
+3. Execute o seguinte comando para iniciar o jogo:
+
     ```bash
-    python jogo_console.py
+    python desafio_empresas.py
     ```
-
-## Lógica de Funcionamento do Jogo
-
-### Introdução
-
-Os jogadores começam o jogo criando suas empresas e definindo quanto desejam investir em três áreas: **Marketing**, **P&D** e **Produção**. A cada rodada, um cenário aleatório é gerado, trazendo novos desafios e oportunidades para as empresas.
-
-### Áreas de Investimento
-
-Os investimentos são divididos nas seguintes áreas, cada uma com um impacto diferente no faturamento das empresas:
-
-1. **Marketing**:
-
-    - **Objetivo**: Aumentar a visibilidade da empresa e atrair mais clientes.
-    - **Impacto**: Investimentos elevados em marketing podem resultar em um aumento significativo nas vendas, especialmente em um ambiente de alta concorrência.
-
-2. **Pesquisa e Desenvolvimento (P&D)**:
-
-    - **Objetivo**: Inovar e melhorar produtos existentes.
-    - **Impacto**: Um bom investimento em P&D pode levar a melhorias a longo prazo, possibilitando a redução de custos operacionais e a criação de produtos mais competitivos.
-
-3. **Produção**:
-    - **Objetivo**: Aumentar a eficiência produtiva e atender à demanda do mercado.
-    - **Impacto**: Um investimento eficaz na produção pode resultar em maiores margens de lucro e capacidade de resposta às demandas do mercado.
-
-### Eventos do Mercado
-
-Durante o jogo, a cada rodada, um evento aleatório é gerado, influenciando o desempenho das empresas de diferentes maneiras. Alguns exemplos de eventos são:
-
--   **Mudança nas preferências do consumidor**: Aumenta a eficácia dos investimentos em novos produtos.
--   **Nova regulamentação**: Impõe desafios e exige adaptações, aumentando a importância dos investimentos em P&D.
--   **Crise econômica**: Afeta negativamente todos os investimentos, exigindo uma gestão cuidadosa dos recursos.
--   **Concorrência intensa**: Aumenta a necessidade de investir em marketing para manter a visibilidade e as vendas.
-
-### Vencedor do Jogo
-
-Ao final de todas as rodadas, a empresa com o maior saldo acumulado é declarada vencedora. O jogo não apenas testa as habilidades estratégicas dos jogadores, mas também simula a imprevisibilidade e os desafios do ambiente de negócios.
-
-## Dependências
-
--   **Python** (versão 3.6 ou superior).
-
-## Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request. Agradecemos por seu interesse em melhorar o "Desafio das Empresas"!
