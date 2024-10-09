@@ -1,6 +1,10 @@
 import random
 import os
 import time
+from colorama import Fore, Style, init
+
+# Inicializar a colorama
+init(autoreset=True)
 
 # Classe que representa uma empresa (jogador)
 class Empresa:
@@ -13,6 +17,13 @@ class Empresa:
         retorno_marketing = marketing * multiplicadores['marketing']
         retorno_pd = pd * multiplicadores['pd']
         retorno_producao = producao * multiplicadores['producao']
+        
+        # Simulação do cálculo do retorno com barra de progresso
+        print(f"{Fore.YELLOW}Calculando retorno sobre os investimentos...", end="", flush=True)
+        for _ in range(3):
+            time.sleep(0.5)
+            print(".", end="", flush=True)
+        print("\n")
         
         # O saldo é atualizado com o retorno dos investimentos
         self.saldo += retorno_marketing + retorno_pd + retorno_producao
@@ -27,31 +38,40 @@ def digitar_texto(texto, velocidade=0.02):
 # Função para exibir o ranking das empresas com efeito de digitação apenas na listagem
 def exibir_ranking(empresas):
     empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
-    print("\n" + "═" * 50)
-    print("🏆  RANKING DAS EMPRESAS  🏆".center(50))
-    print("═" * 50)
+    print("\n" + Fore.BLUE + "═" * 50)
+    print(Fore.MAGENTA + "🏆  RANKING DAS EMPRESAS  🏆".center(50))
+    print(Fore.BLUE + "═" * 50)
     for i, empresa in enumerate(empresas_ordenadas, start=1):
-        digitar_texto(f"{i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
-    print("═" * 50)
+        # Aplicar troféus para os três primeiros
+        if i == 1:
+            icone = "🥇"
+        elif i == 2:
+            icone = "🥈"
+        elif i == 3:
+            icone = "🥉"
+        else:
+            icone = "  "  # Adicionar três espaços para alinhar corretamente
+        digitar_texto(f"{icone} {i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
+    print(Fore.BLUE + "═" * 50)
 
 # Função para limpar a tela
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Função que exibe a tela inicial
+# Função que exibe a tela inicial com arte ASCII e cores
 def tela_inicial():
     limpar_tela()
-    print("═" * 50)
-    print(" 📊 BEM-VINDO AO DESAFIO DAS EMPRESAS 📊".center(50))
-    print("═" * 50)
-    print("📌 COMO FUNCIONA O JOGO:")
+    print(Fore.GREEN + "═" * 50)
+    print(Fore.CYAN + "💼 CEO SIMULATOR 💼".center(50))
+    print(Fore.GREEN + "═" * 50)
+    print(Fore.YELLOW + "📌 COMO FUNCIONA O JOGO:")
     print("Você é o CEO de uma empresa em um mercado altamente competitivo.")
     print("A cada rodada, você fará decisões estratégicas sobre onde investir seu orçamento.")
     print("\nÁreas de investimento disponíveis:")
-    print("  ➤ Marketing: Aumenta a visibilidade da empresa.")
-    print("  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
-    print("  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
-    print("═" * 50)
+    print(Fore.GREEN + "  ➤ Marketing: Aumenta a visibilidade da empresa.")
+    print(Fore.CYAN + "  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
+    print(Fore.MAGENTA + "  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
+    print(Fore.GREEN + "═" * 50)
     input("Pressione Enter para iniciar o jogo...")
 
 # Função que cria cenários sem repetição para cada rodada
@@ -156,35 +176,35 @@ def jogo():
         # Exibir o ranking fixo no início de cada rodada
         exibir_ranking(empresas)
 
-        print(f"\n{rodada}ª RODADA")
+        print(f"\n{Fore.CYAN}{rodada}ª RODADA")
         
         # Obter o cenário único da rodada
         cenario = cenarios[rodada - 1]
-        print(f"Cenário: {cenario['descricao']}")
-        print("=" * 50)
+        print(Fore.MAGENTA + f"Cenário: {cenario['descricao']}")
+        print(Fore.CYAN + "═" * 50)
         
         # Ordenar as empresas de acordo com o saldo atual (ranking)
         empresas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
 
         # Para cada jogador, solicitar os investimentos na ordem do ranking
         for empresa in empresas:
-            print(f"\n{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
-            print(f"Saldo disponível: R${empresa.saldo:.2f}")
+            print(f"\n{Fore.GREEN}{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
+            print(f"{Fore.YELLOW}Saldo disponível: R${empresa.saldo:.2f}")
             
             while True:  # Laço para garantir que o jogador corrija os valores
                 try:
                     # Solicitar os investimentos
-                    marketing = float(input("Investimento em Marketing (R$): "))
-                    pd = float(input("Investimento em P&D (R$): "))
-                    producao = float(input("Investimento em Produção (R$): "))
+                    marketing = float(input(Fore.BLUE + "Investimento em Marketing (R$): "))
+                    pd = float(input(Fore.BLUE + "Investimento em P&D (R$): "))
+                    producao = float(input(Fore.BLUE + "Investimento em Produção (R$): "))
                 except ValueError:
-                    print("⚠️ Valor inválido! Tente novamente.")
+                    print(Fore.RED + "⚠️ Valor inválido! Tente novamente.")
                     continue
                 
                 # Verificar se os investimentos não ultrapassam o saldo
                 total_investido = marketing + pd + producao
                 if total_investido > empresa.saldo:
-                    print("❌ Investimento maior que o saldo disponível. Tente novamente.")
+                    print(Fore.RED + "❌ Investimento maior que o saldo disponível. Tente novamente.")
                 else:
                     # Se os valores forem válidos, sair do laço
                     break
@@ -193,14 +213,14 @@ def jogo():
             empresa.investir(marketing, pd, producao, cenario)
 
         # Exibir ranking ao final da rodada (fixo no início da próxima)
-        input("\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
+        input(Fore.YELLOW + "\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
 
     # Exibir o vencedor ao final do jogo
     limpar_tela()
     exibir_ranking(empresas)
     vencedor = max(empresas, key=lambda x: x.saldo)
-    print(f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
-    print("=" * 50)
+    print(Fore.GREEN + f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
+    print(Fore.GREEN + "═" * 50)
 
 # Executar o jogo
 if __name__ == "__main__":
