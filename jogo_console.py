@@ -36,22 +36,28 @@ def digitar_texto(texto, velocidade=0.02):
     print()
 
 # Função para exibir o ranking das empresas com efeito de digitação apenas na listagem
-def exibir_ranking(empresas):
+def exibir_ranking(empresas, rodada):
     empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
     print("\n" + Fore.GREEN + "═" * 50)
     print(Fore.WHITE + "🏆  RANKING DAS EMPRESAS  🏆".center(50))
     print(Fore.GREEN + "═" * 50)
+    
     for i, empresa in enumerate(empresas_ordenadas, start=1):
-        # Aplicar troféus para os três primeiros
-        if i == 1:
-            icone = "🥇"
-        elif i == 2:
-            icone = "🥈"
-        elif i == 3:
-            icone = "🥉"
+        # Somente exibir medalhas a partir da segunda rodada
+        if rodada > 1:
+            if i == 1:
+                icone = "🥇"
+            elif i == 2:
+                icone = "🥈"
+            elif i == 3:
+                icone = "🥉"
+            else:
+                icone = "  "  # Adicionar dois espaços para alinhar corretamente
         else:
-            icone = "  "  # Adicionar dois espaços para alinhar corretamente
+            icone = "  "  # Sem medalhas na primeira rodada
+
         digitar_texto(f"{icone} {i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
+    
     print(Fore.GREEN + "═" * 50)
 
 # Função para limpar a tela
@@ -173,8 +179,8 @@ def jogo():
     for rodada in range(1, num_rodadas + 1):
         limpar_tela()
 
-        # Exibir o ranking fixo no início de cada rodada
-        exibir_ranking(empresas)
+        # Exibir o ranking com a rodada atual
+        exibir_ranking(empresas, rodada)
 
         print(f"\n{Fore.GREEN}{rodada}ª RODADA")
         
@@ -217,7 +223,7 @@ def jogo():
 
     # Exibir o vencedor ao final do jogo
     limpar_tela()
-    exibir_ranking(empresas)
+    exibir_ranking(empresas, rodada=num_rodadas + 1)
     vencedor = max(empresas, key=lambda x: x.saldo)
     print(Fore.YELLOW + f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
     print(Fore.GREEN + "═" * 50)
