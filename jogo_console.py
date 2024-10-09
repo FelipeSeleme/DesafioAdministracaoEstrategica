@@ -57,32 +57,80 @@ def tela_inicial():
 # Função que cria cenários sem repetição para cada rodada
 def gerar_cenarios_unicos(num_rodadas):
     cenarios_disponiveis = [
-        {"descricao": "A demanda do mercado aumentou. Produzir mais parece ser uma boa opção.", "marketing": 1.2, "pd": 1.1, "producao": 1.5},
-        {"descricao": "A concorrência está feroz! Talvez seja a hora de investir em Marketing.", "marketing": 1.5, "pd": 1.1, "producao": 1.0},
-        {"descricao": "O mercado está saturado. Inovar pode ser a única saída.", "marketing": 1.0, "pd": 1.6, "producao": 1.2},
-        {"descricao": "Custos de produção estão subindo. Cuidados com excesso de produção.", "marketing": 1.3, "pd": 1.0, "producao": 0.8},
-        {"descricao": "O setor de tecnologia está aquecido! Investimentos em P&D podem dar uma vantagem competitiva.", "marketing": 1.0, "pd": 1.8, "producao": 1.1},
-        {"descricao": "Uma nova rede social viralizou, oferecendo oportunidades de Marketing digital.", "marketing": 1.7, "pd": 1.1, "producao": 1.0},
-        {"descricao": "Um novo concorrente entrou no mercado com um produto inovador.", "marketing": 1.3, "pd": 1.5, "producao": 1.0},
-        {"descricao": "Houve uma queda nas taxas de juros, facilitando empréstimos para expansão de produção.", "marketing": 1.0, "pd": 1.2, "producao": 1.7},
-        {"descricao": "Uma mudança regulatória impôs novas regras para publicidade.", "marketing": 0.9, "pd": 1.2, "producao": 1.1},
-        {"descricao": "A demanda por produtos sustentáveis está em alta, impulsionando a inovação em P&D.", "marketing": 1.1, "pd": 1.7, "producao": 1.0},
-        {"descricao": "Um aumento inesperado de inflação afetou os custos de produção.", "marketing": 1.0, "pd": 1.0, "producao": 0.7},
-        {"descricao": "O país está em recessão, consumidores estão cautelosos, e estratégias de Marketing precisam ser agressivas.", "marketing": 1.8, "pd": 1.2, "producao": 0.9},
-        {"descricao": "Novas tecnologias de automação reduziram custos de produção.", "marketing": 1.0, "pd": 1.5, "producao": 1.6},
-        {"descricao": "A mídia social passou por uma mudança nas regras de publicidade, impactando campanhas de Marketing.", "marketing": 0.8, "pd": 1.4, "producao": 1.2},
-        {"descricao": "A percepção do consumidor sobre qualidade aumentou. Investimentos em P&D se tornam críticos.", "marketing": 1.1, "pd": 1.8, "producao": 1.1},
-        {"descricao": "Um aumento no preço dos materiais causou um impacto nos custos de produção.", "marketing": 1.2, "pd": 1.0, "producao": 0.8},
-        {"descricao": "A tendência de 'boicotes sociais' contra empresas cresceu, e as marcas precisam melhorar sua imagem pública.", "marketing": 1.6, "pd": 1.0, "producao": 1.1},
-        {"descricao": "Uma inovação revolucionária foi introduzida no mercado, mudando completamente o setor.", "marketing": 1.1, "pd": 1.9, "producao": 1.3},
-        {"descricao": "O setor de e-commerce está crescendo rapidamente, criando novas oportunidades para Marketing digital.", "marketing": 1.7, "pd": 1.3, "producao": 1.0},
-        {"descricao": "Mudanças climáticas estão afetando a cadeia de suprimentos e a produção, exigindo inovação.", "marketing": 1.2, "pd": 1.6, "producao": 0.9},
-        {"descricao": "Houve um crescimento explosivo nas plataformas de streaming, oferecendo novas opções para publicidade digital.", "marketing": 1.6, "pd": 1.2, "producao": 1.0},
-        {"descricao": "Houve uma queda nos preços de energia, o que reduz os custos de produção.", "marketing": 1.0, "pd": 1.0, "producao": 1.8},
-        {"descricao": "O governo anunciou novos subsídios para empresas que investem em pesquisa e desenvolvimento.", "marketing": 1.0, "pd": 2.0, "producao": 1.2},
-        {"descricao": "Uma crise de confiança abalou o mercado, e as empresas precisam se reposicionar no Marketing.", "marketing": 1.8, "pd": 1.3, "producao": 1.0}
+        {"descricao": "Uma inesperada explosão na demanda está tomando o mercado de surpresa. O setor inteiro está se ajustando à nova realidade.",
+         "marketing": 1.2, "pd": 1.1, "producao": 1.5},
+        
+        {"descricao": "A competição atingiu níveis intensos, e as grandes jogadas estão acontecendo. Cada movimento no mercado é acompanhado de perto.",
+         "marketing": 1.3, "pd": 0.9, "producao": 0.8},
+        
+        {"descricao": "O mercado parece estagnado, com produtos familiares saturando as prateleiras. As empresas procuram desesperadamente algo que se destaque.",
+         "marketing": 1.0, "pd": 1.3, "producao": 0.8},
+        
+        {"descricao": "Com os custos de produção disparando, a pressão financeira ameaça os lucros. A cautela se torna uma necessidade constante.",
+         "marketing": 0.9, "pd": 1.1, "producao": 0.8},
+        
+        {"descricao": "As inovações tecnológicas estão dominando as conversas em todo o setor, e quem liderar essa corrida pode ditar as regras do futuro.",
+         "marketing": 1.1, "pd": 1.5, "producao": 1.0},
+        
+        {"descricao": "Uma nova plataforma social emergiu, capturando a atenção global. O mundo digital está mais vibrante e imprevisível do que nunca.",
+         "marketing": 1.3, "pd": 1.1, "producao": 1.0},
+        
+        {"descricao": "Uma startup ousada acaba de fazer um grande lançamento, atraindo a atenção da mídia. Todos os olhos estão voltados para o próximo passo.",
+         "marketing": 1.3, "pd": 1.5, "producao": 1.0},
+        
+        {"descricao": "As taxas de juros caíram drasticamente, abrindo portas para novas expansões. O cenário financeiro está em plena transformação.",
+         "marketing": 1.0, "pd": 1.2, "producao": 1.7},
+        
+        {"descricao": "Uma mudança nas regulações governamentais virou o jogo da publicidade. Agora, o mercado se adapta às novas regras impostas.",
+         "marketing": 0.9, "pd": 1.2, "producao": 1.1},
+        
+        {"descricao": "O interesse por soluções sustentáveis está no auge. As empresas que não se adaptarem a essa realidade podem ser deixadas para trás.",
+         "marketing": 1.1, "pd": 1.3, "producao": 1.0},
+        
+        {"descricao": "Um surto inflacionário pegou todos de surpresa, elevando os custos e forçando mudanças rápidas na estratégia de negócios.",
+         "marketing": 0.9, "pd": 0.9, "producao": 0.7},
+        
+        {"descricao": "Em meio a uma recessão, os consumidores estão mais cautelosos do que nunca. Atrair atenção agora exige uma abordagem estratégica única.",
+         "marketing": 1.2, "pd": 1.1, "producao": 0.9},
+        
+        {"descricao": "Novas ferramentas de automação começaram a transformar processos produtivos. Quem se adapta rápido, encontra uma vantagem crucial.",
+         "marketing": 1.0, "pd": 1.5, "producao": 1.2},
+        
+        {"descricao": "Mudanças drásticas nas políticas de publicidade online estão impactando como as empresas podem alcançar seus clientes.",
+         "marketing": 1.1, "pd": 1.4, "producao": 1.2},
+        
+        {"descricao": "Os consumidores estão cada vez mais exigentes em relação à qualidade dos produtos. Adaptar-se a essa nova expectativa se tornou prioridade.",
+         "marketing": 1.1, "pd": 1.3, "producao": 1.1},
+        
+        {"descricao": "Os custos dos materiais subiram abruptamente, forçando as empresas a revisarem suas operações em busca de eficiência.",
+         "marketing": 0.9, "pd": 1.5, "producao": 0.8},
+        
+        {"descricao": "Boicotes sociais contra corporações têm ganhado força. A imagem pública das empresas nunca foi tão importante.",
+         "marketing": 1.6, "pd": 1.0, "producao": 1.1},
+        
+        {"descricao": "Uma descoberta revolucionária acabou de ser anunciada, prometendo mudar os rumos do setor. As implicações são imensas para quem se adaptar primeiro.",
+         "marketing": 1.1, "pd": 1.9, "producao": 1.3},
+        
+        {"descricao": "As vendas online estão crescendo a uma taxa sem precedentes, mudando rapidamente as dinâmicas de mercado. O e-commerce está em expansão.",
+         "marketing": 1.7, "pd": 1.3, "producao": 1.0},
+        
+        {"descricao": "Desastres ambientais estão afetando cadeias de suprimentos globais. As empresas precisam repensar sua abordagem para manter a produção viável.",
+         "marketing": 0.9, "pd": 1.5, "producao": 0.9},
+        
+        {"descricao": "O aumento na adoção de plataformas de streaming está mudando como as empresas anunciam, com novas oportunidades surgindo.",
+         "marketing": 1.2, "pd": 1.2, "producao": 1.1},
+        
+        {"descricao": "Os custos de energia caíram repentinamente, criando uma oportunidade única para rever as operações e cortar despesas.",
+         "marketing": 1.0, "pd": 1.0, "producao": 1.8},
+        
+        {"descricao": "O governo anunciou subsídios generosos para empresas inovadoras. Novas portas se abriram.",
+         "marketing": 1.0, "pd": 2.0, "producao": 1.2},
+        
+        {"descricao": "Uma onda de incerteza tomou conta do mercado. Empresas precisam se reposicionar rapidamente para restaurar a confiança dos consumidores.",
+         "marketing": 1.8, "pd": 1.3, "producao": 1.0}
     ]
     return random.sample(cenarios_disponiveis, num_rodadas)
+
 
 # Função principal do jogo
 def jogo():
