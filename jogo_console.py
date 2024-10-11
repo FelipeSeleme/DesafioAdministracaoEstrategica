@@ -1,7 +1,7 @@
 import random
 import os
 import time
-from colorama import Fore, Style, init
+from colorama import Fore, init
 
 # Inicializar a colorama
 init(autoreset=True)
@@ -38,9 +38,9 @@ def digitar_texto(texto, velocidade=0.01):
 # Função para exibir o ranking das empresas com efeito de digitação apenas na listagem
 def exibir_ranking(empresas, rodada):
     empresas_ordenadas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
-    print("\n" + Fore.GREEN + "═" * 50)
+    print("\n" + Fore.LIGHTGREEN_EX + "═" * 50)
     print(Fore.WHITE + "🏆  RANKING DAS EMPRESAS  🏆".center(50))
-    print(Fore.GREEN + "═" * 50)
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
     
     for i, empresa in enumerate(empresas_ordenadas, start=1):
         # Somente exibir medalhas a partir da segunda rodada
@@ -58,7 +58,7 @@ def exibir_ranking(empresas, rodada):
 
         digitar_texto(f"{icone} {i}. {empresa.nome:<20} - Saldo: R${empresa.saldo:,.2f}")
     
-    print(Fore.GREEN + "═" * 50)
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
 
 # Função para limpar a tela
 def limpar_tela():
@@ -67,17 +67,17 @@ def limpar_tela():
 # Função que exibe a tela inicial com arte ASCII e cores
 def tela_inicial():
     limpar_tela()
-    print(Fore.GREEN + "═" * 50)
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
     print("💼 CEO SIMULATOR 💼".center(50))
-    print(Fore.GREEN + "═" * 50)
-    print(Fore.YELLOW + "📌 COMO FUNCIONA O JOGO:")
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
+    print(Fore.LIGHTYELLOW_EX + "📌 COMO FUNCIONA O JOGO:")
     print("Você é o CEO de uma empresa em um mercado altamente competitivo.")
     print("A cada rodada, você fará decisões estratégicas sobre onde investir seu orçamento.")
     print("\nÁreas de investimento disponíveis:")
-    print(Fore.YELLOW + "  ➤ Marketing: Aumenta a visibilidade da empresa.")
-    print(Fore.YELLOW + "  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
-    print(Fore.YELLOW + "  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
-    print(Fore.GREEN + "═" * 50)
+    print(Fore.LIGHTYELLOW_EX + "  ➤ Marketing: Aumenta a visibilidade da empresa.")
+    print(Fore.LIGHTYELLOW_EX + "  ➤ Pesquisa e Desenvolvimento (P&D): Gera inovação e novos produtos.")
+    print(Fore.LIGHTYELLOW_EX + "  ➤ Produção: Aumenta a capacidade produtiva para atender a demanda.")
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
     input("Pressione Enter para iniciar o jogo...")
 
 # Função que cria cenários sem repetição para cada rodada
@@ -182,27 +182,27 @@ def jogo():
         # Exibir o ranking com a rodada atual
         exibir_ranking(empresas, rodada)
 
-        print(f"\n{Fore.GREEN}{rodada}ª RODADA")
+        print(f"\n{Fore.LIGHTGREEN_EX}{rodada}ª RODADA")
         
         # Obter o cenário único da rodada
         cenario = cenarios[rodada - 1]
         print(Fore.WHITE + f"Cenário: {cenario['descricao']}")
-        print(Fore.GREEN + "═" * 50)
+        print(Fore.LIGHTGREEN_EX + "═" * 50)
         
         # Ordenar as empresas de acordo com o saldo atual (ranking)
         empresas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
 
         # Para cada jogador, solicitar os investimentos na ordem do ranking
         for empresa in empresas:
-            print(f"\n{Fore.YELLOW}{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
+            print(f"\n{Fore.LIGHTYELLOW_EX}{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
             print(Fore.WHITE + f"Saldo disponível: R${empresa.saldo:.2f}")
             
             while True:  # Laço para garantir que o jogador corrija os valores
                 try:
                     # Solicitar os investimentos
-                    marketing = float(input(Fore.CYAN + "Investimento em Marketing (R$): "))
-                    pd = float(input(Fore.CYAN + "Investimento em P&D (R$): "))
-                    producao = float(input(Fore.CYAN + "Investimento em Produção (R$): "))
+                    marketing = float(input(Fore.LIGHTCYAN_EX + "Investimento em Marketing (R$): "))
+                    pd = float(input(Fore.LIGHTCYAN_EX + "Investimento em P&D (R$): "))
+                    producao = float(input(Fore.LIGHTCYAN_EX + "Investimento em Produção (R$): "))
                 except ValueError:
                     print(Fore.RED + "⚠️ Valor inválido! Tente novamente.")
                     continue
@@ -219,14 +219,14 @@ def jogo():
             empresa.investir(marketing, pd, producao, cenario)
 
         # Exibir ranking ao final da rodada (fixo no início da próxima)
-        input(Fore.YELLOW + "\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
+        input(Fore.LIGHTYELLOW_EX + "\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
 
     # Exibir o vencedor ao final do jogo
     limpar_tela()
     exibir_ranking(empresas, rodada=num_rodadas + 1)
     vencedor = max(empresas, key=lambda x: x.saldo)
-    print(Fore.YELLOW + f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
-    print(Fore.GREEN + "═" * 50)
+    print(Fore.LIGHTYELLOW_EX + f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
+    print(Fore.LIGHTGREEN_EX + "═" * 50)
 
 # Executar o jogo
 if __name__ == "__main__":
