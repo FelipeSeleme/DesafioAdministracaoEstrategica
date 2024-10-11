@@ -29,7 +29,7 @@ class Empresa:
         self.saldo += retorno_marketing + retorno_pd + retorno_producao
 
 # Função para exibir o texto com efeito de digitação
-def digitar_texto(texto, velocidade=0.02):
+def digitar_texto(texto, velocidade=0.01):
     for caractere in texto:
         print(caractere, end='', flush=True)
         time.sleep(velocidade)
