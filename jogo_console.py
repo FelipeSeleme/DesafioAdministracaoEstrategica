@@ -104,7 +104,7 @@ def gerar_cenarios_unicos(num_rodadas):
          "marketing": 1.3, "pd": 0.9, "producao": 0.8},
         
         {"descricao": "O mercado parece estagnado, com produtos familiares saturando as prateleiras. \nAs empresas procuram desesperadamente algo que se destaque.",
-         "marketing": 1.0, "pd": 1.3, "producao": 0.7},
+         "marketing": 1.0, "pd": 1.3, "producao": 0.8},
         
         {"descricao": "Com os custos de produção disparando, a pressão financeira ameaça os lucros. \nA cautela se torna uma necessidade constante.",
          "marketing": 0.9, "pd": 1.1, "producao": 0.8},
