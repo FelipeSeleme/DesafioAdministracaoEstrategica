@@ -2,6 +2,7 @@ import random
 import os
 import time
 from colorama import Fore, init
+import matplotlib.pyplot as plt  # Adicionar import para o matplotlib
 
 # Inicializar a colorama
 init(autoreset=True)
@@ -11,9 +12,10 @@ class Empresa:
     def __init__(self, nome):
         self.nome = nome
         self.saldo = 1000.0  # Saldo inicial de R$ 1.000,00
+        self.saldo_historico = [self.saldo]  # Lista para armazenar o histórico do saldo
 
     def investir(self, marketing, pd, producao, multiplicadores):
-        # Cálculo dos retornos com base nos multiplicadores do cenário (oculto para os jogadores)
+        # Cálculo dos retornos com base nos multiplicadores do cenário
         retorno_marketing = marketing * multiplicadores['marketing']
         retorno_pd = pd * multiplicadores['pd']
         retorno_producao = producao * multiplicadores['producao']
@@ -25,8 +27,9 @@ class Empresa:
             print(".", end="", flush=True)
         print("\n")
         
-        # O saldo é atualizado com o retorno dos investimentos
+        # Atualizar saldo com os retornos
         self.saldo += retorno_marketing + retorno_pd + retorno_producao
+        self.saldo_historico.append(self.saldo)  # Adiciona o saldo atual ao histórico
 
 # Função para exibir o texto com efeito de digitação
 def digitar_texto(texto, velocidade=0.01):
@@ -98,7 +101,7 @@ def tela_inicial():
 def gerar_cenarios_unicos(num_rodadas):
     cenarios_disponiveis = [
         {"descricao": "Uma inesperada explosão na demanda está tomando o mercado de surpresa. \nO setor inteiro está se ajustando à nova realidade.",
-         "marketing": 1.2, "pd": 1.1, "producao": 1.5},
+         "marketing": 1.0, "pd": 0.9, "producao": 1.3},
         
         {"descricao": "A competição atingiu níveis intensos, e as grandes jogadas estão acontecendo. \nCada movimento no mercado é acompanhado de perto.",
          "marketing": 1.3, "pd": 0.9, "producao": 0.8},
@@ -110,19 +113,19 @@ def gerar_cenarios_unicos(num_rodadas):
          "marketing": 0.9, "pd": 1.1, "producao": 0.8},
         
         {"descricao": "As inovações tecnológicas estão dominando as conversas em todo o setor, \ne quem liderar essa corrida pode ditar as regras do futuro.",
-         "marketing": 1.1, "pd": 1.5, "producao": 1.0},
+         "marketing": 0.9, "pd": 1.3, "producao": 0.8},
         
         {"descricao": "Uma nova plataforma social emergiu, capturando a atenção global. \nO mundo digital está mais vibrante e imprevisível do que nunca.",
          "marketing": 1.3, "pd": 1.1, "producao": 1.0},
         
         {"descricao": "Uma startup ousada acaba de fazer um grande lançamento, atraindo a atenção da mídia. \nTodos os olhos estão voltados para o próximo passo.",
-         "marketing": 1.3, "pd": 1.5, "producao": 1.0},
+         "marketing": 1.1, "pd": 1.3, "producao": 0.8},
         
         {"descricao": "As taxas de juros caíram drasticamente, abrindo portas para novas expansões. \nO cenário financeiro está em plena transformação.",
-         "marketing": 1.0, "pd": 1.2, "producao": 1.7},
+         "marketing": 0.6, "pd": 0.8, "producao": 1.3},
         
         {"descricao": "Uma mudança nas regulações governamentais virou o jogo da publicidade. \nAgora, o mercado se adapta às novas regras impostas.",
-         "marketing": 0.9, "pd": 1.2, "producao": 1.1},
+         "marketing": 0.8, "pd": 1.1, "producao": 1.0},
         
         {"descricao": "O interesse por soluções sustentáveis está no auge. \nAs empresas que não se adaptarem a essa realidade podem ser deixadas para trás.",
          "marketing": 1.1, "pd": 1.3, "producao": 1.0},
@@ -134,43 +137,56 @@ def gerar_cenarios_unicos(num_rodadas):
          "marketing": 1.2, "pd": 1.1, "producao": 0.9},
         
         {"descricao": "Novas ferramentas de automação começaram a transformar processos produtivos. \nQuem se adapta rápido, encontra uma vantagem crucial.",
-         "marketing": 1.0, "pd": 1.5, "producao": 1.2},
+         "marketing": 0.8, "pd": 1.3, "producao": 1.0},
         
         {"descricao": "Mudanças drásticas nas políticas de publicidade online estão impactando \ncomo as empresas podem alcançar seus clientes.",
-         "marketing": 1.1, "pd": 1.4, "producao": 1.2},
+         "marketing": 1.0, "pd": 1.3, "producao": 1.1},
         
         {"descricao": "Os consumidores estão cada vez mais exigentes em relação à qualidade dos produtos. \nAdaptar-se a essa nova expectativa se tornou prioridade.",
-         "marketing": 1.1, "pd": 1.3, "producao": 1.1},
+         "marketing": 1.1, "pd": 1.3, "producao": 1.0},
         
         {"descricao": "Os custos dos materiais subiram abruptamente, \nforçando as empresas a revisarem suas operações em busca de eficiência.",
-         "marketing": 0.9, "pd": 1.5, "producao": 0.8},
+         "marketing": 0.9, "pd": 1.3, "producao": 0.8},
         
         {"descricao": "Boicotes sociais contra corporações têm ganhado força. \nA imagem pública das empresas nunca foi tão importante.",
-         "marketing": 1.6, "pd": 1.0, "producao": 1.1},
+         "marketing": 1.3, "pd": 1.0, "producao": 1.1},
         
         {"descricao": "Uma descoberta revolucionária acabou de ser anunciada, prometendo mudar os rumos do setor. \nAs implicações são imensas para quem se adaptar primeiro.",
-         "marketing": 1.1, "pd": 1.9, "producao": 1.3},
+         "marketing": 1.1, "pd": 1.3, "producao": 1.0},
         
         {"descricao": "As vendas online estão crescendo a uma taxa sem precedentes, \nmudando rapidamente as dinâmicas de mercado. O e-commerce está em expansão.",
-         "marketing": 1.7, "pd": 1.3, "producao": 1.0},
+         "marketing": 1.2, "pd": 1.3, "producao": 1.0},
         
         {"descricao": "Desastres ambientais estão afetando cadeias de suprimentos globais. \nAs empresas precisam repensar sua abordagem para manter a produção viável.",
-         "marketing": 0.9, "pd": 1.5, "producao": 0.9},
+         "marketing": 0.7, "pd": 1.3, "producao": 0.7},
         
         {"descricao": "O aumento na adoção de plataformas de streaming está mudando como as empresas anunciam, \ncom novas oportunidades surgindo.",
          "marketing": 1.2, "pd": 1.2, "producao": 1.1},
         
         {"descricao": "Os custos de energia caíram repentinamente, \ncriando uma oportunidade única para rever as operações e cortar despesas.",
-         "marketing": 1.0, "pd": 1.0, "producao": 1.8},
+         "marketing": 1.0, "pd": 1.0, "producao": 1.3},
         
         {"descricao": "O governo anunciou subsídios generosos para empresas inovadoras. \nNovas portas se abriram.",
-         "marketing": 1.0, "pd": 2.0, "producao": 1.2},
+         "marketing": 1.0, "pd": 1.3, "producao": 1.2},
         
         {"descricao": "Uma onda de incerteza tomou conta do mercado. \nEmpresas precisam se reposicionar rapidamente para restaurar a confiança dos consumidores.",
-         "marketing": 1.8, "pd": 1.3, "producao": 1.0}
+         "marketing": 1.3, "pd": 1.0, "producao": 0.7}
     ]
     return random.sample(cenarios_disponiveis, num_rodadas)
 
+
+# Função para exibir gráfico ao final do jogo
+def exibir_grafico(empresas):
+    plt.figure(figsize=(10, 6))
+    for empresa in empresas:
+        plt.plot(empresa.saldo_historico, label=empresa.nome, marker='o')
+
+    plt.title("Evolução do Saldo dos Jogadores")
+    plt.xlabel("Rodadas")
+    plt.ylabel("Saldo (R$)")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 # Função principal do jogo
 def jogo():
@@ -181,66 +197,50 @@ def jogo():
     num_rodadas = int(input("Quantas rodadas terá o jogo (máx. 10)? "))
     
     # Criar as empresas (jogadores)
-    empresas = []
-    for i in range(num_jogadores):
-        nome_empresa = input(f"Nome da empresa do Jogador {i+1}: ")
-        empresas.append(Empresa(nome_empresa))
-
+    empresas = [Empresa(input(f"Nome da empresa do Jogador {i+1}: ")) for i in range(num_jogadores)]
+    
     # Gerar cenários únicos
     cenarios = gerar_cenarios_unicos(num_rodadas)
 
-    # Rodar o jogo por cada rodada
+    # Rodar o jogo
     for rodada in range(1, num_rodadas + 1):
         limpar_tela()
-
-        # Exibir o ranking com a rodada atual
         exibir_ranking(empresas, rodada)
-
-        print(f"\n{Fore.GREEN}{rodada}ª RODADA")
         
-        # Obter o cenário único da rodada
+        print(f"\n{Fore.GREEN}{rodada}ª RODADA")
         cenario = cenarios[rodada - 1]
         print(Fore.WHITE + f"Cenário: {cenario['descricao']}")
         print(Fore.GREEN + "═" * 50)
-        
-        # Ordenar as empresas de acordo com o saldo atual (ranking)
-        empresas = sorted(empresas, key=lambda x: x.saldo, reverse=True)
 
-        # Para cada jogador, solicitar os investimentos na ordem do ranking
-        for empresa in empresas:
+        for empresa in sorted(empresas, key=lambda x: x.saldo, reverse=True):
             print(f"\n{Fore.LIGHTYELLOW_EX}{empresa.nome}, faça suas escolhas de investimento (Marketing, P&D e Produção):")
             print(Fore.WHITE + f"Saldo disponível: R${empresa.saldo:.2f}")
-            
-            while True:  # Laço para garantir que o jogador corrija os valores
+            while True:
                 try:
-                    # Solicitar os investimentos
                     marketing = float(input(Fore.LIGHTCYAN_EX + "Investimento em Marketing (R$): "))
                     pd = float(input(Fore.LIGHTCYAN_EX + "Investimento em P&D (R$): "))
                     producao = float(input(Fore.LIGHTCYAN_EX + "Investimento em Produção (R$): "))
                 except ValueError:
                     print(Fore.RED + "⚠️ Valor inválido! Tente novamente.")
                     continue
-                
-                # Verificar se os investimentos não ultrapassam o saldo
-                total_investido = marketing + pd + producao
-                if total_investido > empresa.saldo:
+
+                if marketing + pd + producao > empresa.saldo:
                     print(Fore.RED + "❌ Investimento maior que o saldo disponível. Tente novamente.")
                 else:
-                    # Se os valores forem válidos, sair do laço
                     break
 
-            # Atualizar saldo com os retornos (sem mostrar os multiplicadores)
             empresa.investir(marketing, pd, producao, cenario)
 
-        # Exibir ranking ao final da rodada (fixo no início da próxima)
         input(Fore.LIGHTYELLOW_EX + "\nRodada concluída! Pressione Enter para ver o ranking atualizado...")
 
-    # Exibir o vencedor ao final do jogo
     limpar_tela()
     exibir_ranking(empresas, rodada=num_rodadas + 1)
     vencedor = max(empresas, key=lambda x: x.saldo)
     print(Fore.LIGHTYELLOW_EX + f"\n🎉 A empresa vencedora é: {vencedor.nome} com um saldo final de R${vencedor.saldo:.2f}!")
     print(Fore.GREEN + "═" * 50)
+
+    # Exibir gráfico ao final do jogo
+    exibir_grafico(empresas)
 
 # Executar o jogo
 if __name__ == "__main__":
