@@ -2,7 +2,7 @@ import random
 import os
 import time
 from colorama import Fore, init
-import matplotlib.pyplot as plt  # Adicionar import para o matplotlib
+import matplotlib.pyplot as plt
 
 # Inicializar a colorama
 init(autoreset=True)
