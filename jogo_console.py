@@ -177,15 +177,23 @@ def gerar_cenarios_unicos(num_rodadas):
 
 # Função para exibir gráfico ao final do jogo
 def exibir_grafico(empresas):
+    plt.style.use('Solarize_Light2')
     plt.figure(figsize=(10, 6))
+    
     for empresa in empresas:
-        plt.plot(empresa.saldo_historico, label=empresa.nome, marker='o')
-
+        plt.plot(empresa.saldo_historico, label=empresa.nome, marker='o', linewidth=4, alpha=0.8)
+    
     plt.title("Evolução do Saldo dos Jogadores")
     plt.xlabel("Rodadas")
     plt.ylabel("Saldo (R$)")
+    plt.legend(loc="upper left")
     plt.legend()
-    plt.grid(True)
+    plt.grid(True, linestyle='--', alpha=0.6)  # Grid mais sutil
+    
+    # Configura o eixo x para mostrar apenas inteiros
+    max_rodadas = len(empresas[0].saldo_historico) - 1  # Assumindo que todas as empresas têm o mesmo número de rodadas
+    plt.xticks(range(0, max_rodadas + 1, 1))  # Define as marcas apenas em números inteiros
+    
     plt.show()
 
 # Função principal do jogo
@@ -240,6 +248,7 @@ def jogo():
     print(Fore.GREEN + "═" * 50)
 
     # Exibir gráfico ao final do jogo
+    input("Pressione Enter para visualizar o gráfico...")
     exibir_grafico(empresas)
 
 # Executar o jogo
